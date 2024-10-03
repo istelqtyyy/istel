@@ -1,0 +1,297 @@
+/* Basic Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Navbar styles */
+.navbar {
+    background-color: #333;
+    color: black;
+    padding: 1REM;
+    text-align: center;
+}
+
+.navbar ul {
+    list-style: none;
+    display: inline-block; /* Align center */
+    padding: 0;
+}
+
+.navbar ul li {
+    display: inline-block;
+    margin: 0 15px;
+}
+
+.navbar ul li a {
+    color: yellow;
+    text-decoration: none;
+    padding: 5px;
+}
+
+.navbar ul li a:hover {
+    background-color: #555;
+}
+.navbar-title {
+    color: yellow; /* Change text color */
+    font-size: 24px; /* Adjust font size */
+    margin: 0; /* Remove default margin */
+}
+
+/* Sidebar styles */
+.sidebar {
+    width: 250px;
+    height: 200vh;
+    text-align: center;
+    background-color:#333;
+    position: fixed;
+    left: 0;
+    top: 0;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    transition: all 0.3s ease;
+    z-index: 999;
+}
+
+.sidebar.closed {
+    left: -250px;
+}
+
+/* Hamburger button styles */
+.hamburger-btn {
+    background-color: #34495e;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 20px;
+    position: fixed; /* Keep it fixed on the screen */
+    top: 15px;
+    left: 15px; /* Aligns on the left side when closed */
+    transition: all 0.3s ease;
+    z-index: 1000; /* Ensure it stays on top of other elements */
+}
+
+/* Adjust the hamburger button when sidebar is open */
+.sidebar.open + .hamburger-btn {
+    left: 250px; /* Move it to the right side of the sidebar */
+}
+
+/* Hamburger button when sidebar is closed */
+.sidebar.closed .hamburger-btn {
+    left: 15px; /* Moves to the left side of the screen */
+    right: auto;
+}
+
+.hamburger-btn:hover {
+    background-color: #1abc9c;
+}
+
+/* Sidebar content */
+.sidebar-content {
+    flex-grow: 1;
+}
+
+.sidebar-list {
+    list-style: none;
+}
+
+.sidebar-item {
+    padding: 1rem 0;
+}
+
+.sidebar-item a {
+    color: yellow;
+    text-decoration: none;
+    font-size: 20px;
+}
+
+.sidebar-item a:hover {
+    background-color: #34495e;
+}
+
+.submenu {
+    display: none;
+    list-style: none;
+    padding-left: 15px;
+}
+
+.submenu li {
+    padding: 0.5rem 0;
+}
+
+/* Main Content styles */
+.content-wrapper {
+    margin-left: 270px;
+    padding: 2rem;
+    transition: margin-left 0.3s ease;
+}
+
+.sidebar.closed + .content-wrapper {
+    margin-left: 20px;
+}
+
+h1 {
+    color: #2c3e50;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+    .sidebar {
+        width: 200px;
+    }
+
+    .sidebar.closed {
+        left: -200px;
+    }
+
+    .content-wrapper {
+        margin-left: 220px;
+    }
+
+    .sidebar.closed + .content-wrapper {
+        margin-left: 20px;
+    }
+}
+/* Dashboard Folder Icons */
+.dashboard-folders {
+    display: flex;
+    justify-content: space-around; /* Space items evenly */
+    margin-top: 30px;
+}
+
+.folder-item {
+    text-align: center;
+    flex: 1; /* Allows the folder items to grow equally */
+    margin: 0 15px;
+    border: 2px solid #3498db; /* Optional: border for visibility */
+    padding: 20px; /* Space inside each folder */
+    border-radius: 5px; /* Rounded corners */
+    transition: background-color 0.3s; /* Smooth background change */
+}
+
+.folder-item:hover {
+    background-color: #ecf0f1; /* Light background on hover */
+}
+
+.folder-item a {
+    text-decoration: none;
+    color: #2c3e50;
+}
+
+.folder-item i {
+    font-size: 60px; /* Icon size */
+    color: #3498db; /* Icon color */
+    margin-bottom: 10px; /* Space below icon */
+}
+
+.folder-item p {
+    font-size: 18px; /* Text size */
+    color: #2c3e50; /* Text color */
+}
+.dashboard-folders {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 30px;
+}
+
+.folder-item {
+    text-align: center;
+    flex: 1;
+    margin: 0 15px;
+}
+
+.folder-icon {
+    font-size: 60px;
+    color: #3498db;
+    margin-bottom: 10px;
+}
+
+.folder-item a {
+    text-decoration: none;
+    color: #2c3e50;
+}
+
+.folder-item p {
+    font-size: 18px;
+    color: #2c3e50;
+}
+/* Navbar styles */
+.navbar {
+    background-color: #efff0a;
+    color: black;
+    padding: 1rem;
+    text-align: center;
+    position: relative; /* Ensure positioning for notification */
+}
+
+.navbar-left {
+    position: absolute; /* Position the notification icon */
+    left: 15px; /* Adjust as necessary */
+    top: 50%; /* Center vertically */
+    transform: translateY(-50%); /* Adjust for perfect centering */
+}
+
+.notification-icon {
+    color: rgb(28, 81, 143);
+    position: relative;
+    display: inline-block;
+    margin-right: 30px;
+}
+
+.notification-icon i {
+    font-size: 24px; /* Adjust size as needed */
+    color: rgb(19, 76, 233);
+}
+
+.notification-icon .badge {
+    position: absolute;
+    top: -8px;
+    right: -10px;
+    background-color: red;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 50%;
+    font-size: 12px;
+}
+.navbar {
+    display: flex;
+    justify-content: space-between; /* Aligns items with space in between */
+    align-items: center; /* Vertically centers the items */
+}
+
+.navbar ul {
+    display: flex;
+    align-items: left; /* Vertically centers items in the navbar */
+    list-style: none;
+    padding: 0;
+}
+
+.navbar-image {
+    height: 40px; /* Adjust the height as needed */
+    width: auto; /* Keep the aspect ratio */
+    margin-left: 40px; /* Optional: add some spacing on the left */
+}
+.notification-icon {
+    position: relative;
+    display: inline-block;
+}
+
+.notification-icon .badge {
+    position: absolute;
+    top: -8px;
+    right: -10px;
+    background-color: red;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 50%;
+    font-size: 12px;
+}
+.notification-item {
+    cursor: pointer; /* Change cursor to pointer */
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
