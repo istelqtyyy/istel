@@ -1,3 +1,20 @@
+<?php
+// Database credentials
+$host = 'localhost';
+$dbname = 'user'; // Your database name
+$user = 'root'; // Username
+$pass = ''; // Password
+
+// Create connection
+$conn = new mysqli($host, $user, $pass, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -53,8 +70,8 @@
             <label for="password">Password</label>
             <input type="password" id="password" name="password" required>
 
-            <label for="access_level">Access Level</label>
-            <select id="access_level" name="access_level" required>
+            <label for="level">Level</label>
+            <select id="level" name="level" required>
                 <option value="viewer">Admin</option>
                 <option value="editor">HR</option>
                 <option value="admin">CORE</option>
@@ -71,24 +88,24 @@
 
 <?php
 // Include the database connection file
-include 'db_connect.php'; // Create this file for your database connection
+include 'dbconnect.php'; // Create this file for your database connection
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
     // Get the form input data
     $username = $_POST['username'];
     $email = $_POST['email'];
     $password = $_POST['password'];
-    $access_level = $_POST['access_level'];
+    $level = $_POST['level'];
 
     // Hash the password before storing it in the database
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
     // Prepare SQL insert statement
-    $sql = "INSERT INTO usercontrol (username, email, password, access_level) VALUES (?, ?, ?, ?)";
+    $sql = "INSERT INTO usercontrol (username, email, password, level) VALUES (?, ?, ?, ?)";
 
     // Use a prepared statement to prevent SQL injection
     if ($stmt = $conn->prepare($sql)) {
-        $stmt->bind_param("ssss", $username, $email, $hashed_password, $access_level);
+        $stmt->bind_param("ssss", $username, $email, $hashed_password, $level);
 
         // Execute the query
         if ($stmt->execute()) {
