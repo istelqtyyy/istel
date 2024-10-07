@@ -10,7 +10,7 @@
         <div class="folder-item">
             <a href="finance/finance1.php">
                 <i class="folder-icon">📁</i>
-                <p>BUDGET REPORT</p>
+                <p>LEGAL DOCUMENTS</p>
             </a>
         </div>
         <div class="folder-item">
@@ -23,6 +23,12 @@
             <a href="finance/finance3.php">
                 <i class="folder-icon">📁</i>
                 <p>EMPLOYEE ACC.</p>
+            </a>
+        </div>
+        <div class="folder-item">
+            <a href="finance/finance4.php">
+                <i class="folder-icon">📁</i>
+                <p>EMPLOYEE ACC. MONITORING</p>
             </a>
         </div>
     </div>

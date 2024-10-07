@@ -108,8 +108,7 @@ $stmt->close();
                     <span class="navbar-title">GREAT WALL ARTS</span>
                 </li>
                 <li><a href="dashboard.php">Home</a></li>
-                <li><a href="#">About</a></li>
-                <li><a href="#">Settings</a></li>
+                <li><a href="login.php">Logout</a></li>
                 <!-- Bell Icon in header.php -->
                 <a href="notification.php" class="notification-icon" onclick="markNotificationsAsRead()">
                     <i class="fas fa-bell"></i> <!-- Bell icon -->
@@ -141,7 +140,7 @@ $stmt->close();
                 <li class="sidebar-item"><a href="hr.php">HR</a></li>
                 <li class="sidebar-item"><a href="finance.php">FINANCE</a></li>
                 <li class="sidebar-item"><a href="logistics.php">LOGISTICS</a></li>
-                <li class="sidebar-item"><a href="user.php">USER</a></li>
+                <li class="sidebar-item"><a href="user.php">CREATE USER ACCOUNT</a></li>
 
             </ul>
         </div>

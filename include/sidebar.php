@@ -14,7 +14,7 @@
                 <a href="logistics.php">LOGISTICS</a>
             </li>
             <li class="sidebar-item">
-                <a href="user.php">USER</a>
+                <a href="user.php">CREATE USER ACCOUNT</a>
             </li>
         </ul>
     </div>

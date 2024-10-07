@@ -107,7 +107,7 @@
         <div class="upload-section">
             <h3>Upload Document</h3>
             <!-- File Upload Form -->
-            <form action="core1.php" method="POST" enctype="multipart/form-data">
+            <form action="finance1.php" method="POST" enctype="multipart/form-data">
                 <input type="file" name="document" required>
                 <button type="submit" name="upload">Upload</button>
             </form>

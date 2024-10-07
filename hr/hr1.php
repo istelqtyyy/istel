@@ -8,7 +8,23 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <!-- Font Awesome CSS -->
     <style>
-        /* Styles for left and right sections */
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            /* Black background */
+            color: #f8f9fa;
+            /* Light text */
+            padding: 20px;
+        }
+
+        h2,
+        h3 {
+            color: #ffc107;
+            /* Yellow headings */
+        }
+
+        /* Container and Sections */
         .container {
             display: flex;
             justify-content: space-between;
@@ -17,42 +33,48 @@
         .upload-section,
         .file-section {
             width: 45%;
-            background-color: #fff;
+            background-color: #1e1e1e;
+            /* Dark grey background */
             padding: 20px;
             border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            border: 1px solid #ffc107;
+            /* Yellow border */
         }
 
+        /* File section with scroll */
         .file-section {
             max-height: 400px;
-            /* Limit the height to add a scrollbar */
             overflow-y: auto;
-            /* Add vertical scrollbar if content overflows */
         }
 
+        /* List and Items */
         ul {
             list-style: none;
             padding: 0;
         }
 
         li {
-            background: #fff;
+            background: #2b2b2b;
             margin: 5px 0;
             padding: 10px;
             border-radius: 4px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border: 1px solid #ffc107;
+            /* Yellow border */
         }
 
         li a {
             text-decoration: none;
-            color: #333;
+            color: #ffc107;
+            /* Yellow links */
         }
 
         li a:hover {
-            color: #007bff;
-            text-decoration: underline;
+            color: #ffca2c;
+            /* Lighter yellow on hover */
         }
 
+        /* Search Bar */
         .search-bar {
             margin-bottom: 20px;
         }
@@ -61,34 +83,72 @@
             padding: 10px;
             width: calc(100% - 120px);
             font-size: 16px;
+            background-color: #2b2b2b;
+            color: #f8f9fa;
+            border: 1px solid #ffc107;
+            border-radius: 4px;
         }
 
         .search-bar button {
             padding: 10px 20px;
-            background-color: #007bff;
-            color: white;
+            background-color: #ffc107;
+            color: black;
             border: none;
             border-radius: 4px;
             cursor: pointer;
         }
 
         .search-bar button:hover {
-            background-color: #0056b3;
+            background-color: #ffca2c;
         }
 
-        /* Styles for the Back button */
+        /* Back Button */
         .back-button {
             margin-top: 20px;
             padding: 10px 20px;
-            background-color: #ff7f50;
-            color: white;
+            background-color: #ffc107;
+            color: black;
             border: none;
             border-radius: 4px;
             cursor: pointer;
         }
 
         .back-button:hover {
-            background-color: #ff6347;
+            background-color: #ffca2c;
+        }
+
+        /* Home Icon */
+        a i {
+            color: #ffc107;
+            /* Yellow home icon */
+        }
+
+        a i:hover {
+            color: #ffca2c;
+            /* Lighter yellow on hover */
+        }
+
+        /* File rename form */
+        form input[type="text"] {
+            background-color: #2b2b2b;
+            color: #f8f9fa;
+            border: 1px solid #ffc107;
+            border-radius: 4px;
+            padding: 5px;
+            margin-right: 5px;
+        }
+
+        form button {
+            background-color: #ffc107;
+            color: black;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            padding: 5px 10px;
+        }
+
+        form button:hover {
+            background-color: #ffca2c;
         }
     </style>
 </head>
@@ -96,8 +156,8 @@
 <body>
 
     <!-- Home Icon -->
-    <a href="../dashboard.php" style="text-decoration: none; color: #333;">
-        <i class="fas fa-home" style="font-size: 24px;"></i> <!-- Updated home icon -->
+    <a href="../dashboard.php" style="text-decoration: none;">
+        <i class="fas fa-home" style="font-size: 24px;"></i> <!-- Home icon -->
     </a>
 
     <h2>Document Management</h2>
@@ -107,7 +167,7 @@
         <div class="upload-section">
             <h3>Upload Document</h3>
             <!-- File Upload Form -->
-            <form action="core1.php" method="POST" enctype="multipart/form-data">
+            <form action="hr1.php" method="POST" enctype="multipart/form-data">
                 <input type="file" name="document" required>
                 <button type="submit" name="upload">Upload</button>
             </form>

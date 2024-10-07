@@ -30,6 +30,18 @@
                 <p>LOGISTICS</p>
             </a>
         </div>
+        <div class="folder-item">
+            <a href="email/email.php">
+                <i class="folder-icon">📁</i>
+                <p>EMAIL</p>
+            </a>
+        </div>
+        <div class="folder-item">
+            <a href="monitoring.php">
+                <i class="folder-icon">📁</i>
+                <p>ADMIN ACCOUNT MONITORING</p>
+            </a>
+        </div>
     </div>
 </div>
 

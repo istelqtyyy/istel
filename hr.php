@@ -12,7 +12,7 @@
         <div class="folder-item">
             <a href="hr/hr1.php">
                 <i class="folder-icon">📁</i>
-                <p>EMPLOYEE INFO.</p>
+                <p>LEGAL DOCUMENTS</p>
             </a>
         </div>
         <div class="folder-item">
@@ -31,6 +31,12 @@
             <a href="hr/hr4.php">
                 <i class="folder-icon">📁</i>
                 <p>EMPLOYEE ACC.</p>
+            </a>
+        </div>
+        <div class="folder-item">
+            <a href="hr/hr5.php">
+                <i class="folder-icon">📁</i>
+                <p>EMPLOYEE ACC. MONITORING</p>
             </a>
         </div>
     </div>
