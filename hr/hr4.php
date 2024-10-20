@@ -1,25 +1,14 @@
 <?php
-// Database connection
-$host = 'localhost'; // Your database host
-$dbname = 'user'; // Your database name
-$username = 'root'; // Your database username
-$password = ''; // Your database password
-
-try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
-    // Set error mode
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    die("Connection failed: " . $e->getMessage());
-}
+// Adjust the path according to your directory structure
+include '../dbconnect.php'; // Ensure this path is correct
 
 // Handle Delete
 if (isset($_GET['delete'])) {
     $deleteId = $_GET['delete'];
     if (!empty($deleteId) && is_numeric($deleteId)) {
-        $deleteQuery = "DELETE FROM usercontrol WHERE id = :id";
-        $stmt = $pdo->prepare($deleteQuery);
-        $stmt->bindParam(':id', $deleteId, PDO::PARAM_INT);
+        $deleteQuery = "DELETE FROM usercontrol WHERE id = ?";
+        $stmt = $mysqli->prepare($deleteQuery);
+        $stmt->bind_param("i", $deleteId);
         if ($stmt->execute()) {
             header("Location: hr4.php"); // Redirect after deletion
             exit();
@@ -38,12 +27,13 @@ if (isset($_GET['search'])) {
 }
 
 // Fetch accounts leveled as 'HR' with optional search
-$query = "SELECT * FROM usercontrol WHERE level = 'HR' AND (username LIKE :search OR email LIKE :search)";
-$stmt = $pdo->prepare($query);
 $searchTerm = "%" . $searchQuery . "%";
-$stmt->bindParam(':search', $searchTerm, PDO::PARAM_STR);
+$query = "SELECT * FROM usercontrol WHERE level = 'HR' AND (username LIKE ? OR email LIKE ?)";
+$stmt = $conn->prepare($query);
+$stmt->bind_param("ss", $searchTerm, $searchTerm);
 $stmt->execute();
-$accounts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$result = $stmt->get_result();
+$accounts = $result->fetch_all(MYSQLI_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -53,14 +43,13 @@ $accounts = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HR Employee Accounts</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <!-- Font Awesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
+        /* Your existing styles */
         body {
             font-family: Arial, sans-serif;
             background-color: #343a40;
-            /* Dark background */
             color: #f8f9fa;
-            /* Light text */
             padding: 20px;
         }
 
@@ -75,16 +64,14 @@ $accounts = $stmt->fetchAll(PDO::FETCH_ASSOC);
             margin-bottom: 10px;
             padding: 10px;
             border: 1px solid #ffc107;
-            /* Yellow border */
             border-radius: 4px;
             background-color: #495057;
-            /* Darker background for accounts */
         }
 
         .account a {
             text-decoration: none;
             color: #ffc107;
-            /* Yellow links */
+            margin-right: 10px;
         }
 
         .account a.delete {
@@ -108,7 +95,6 @@ $accounts = $stmt->fetchAll(PDO::FETCH_ASSOC);
             padding: 10px;
             margin-left: 5px;
             background-color: #ffc107;
-            /* Yellow */
             color: black;
             border: none;
             border-radius: 4px;
@@ -117,7 +103,6 @@ $accounts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         .search-bar button:hover {
             background-color: #ffca2c;
-            /* Darker yellow */
         }
 
         .nav-buttons {
@@ -130,7 +115,6 @@ $accounts = $stmt->fetchAll(PDO::FETCH_ASSOC);
         .nav-buttons a {
             padding: 10px;
             background-color: #007bff;
-            /* Blue for buttons */
             color: white;
             border-radius: 4px;
             text-decoration: none;
@@ -145,7 +129,6 @@ $accounts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         .nav-buttons a:hover {
             background-color: #0056b3;
-            /* Darker blue */
         }
     </style>
 </head>
@@ -154,13 +137,11 @@ $accounts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <h2>HR Employee Accounts</h2>
 
-    <!-- Navigation Buttons -->
     <div class="nav-buttons">
         <a href="../dashboard.php"><i class="fas fa-home" style="font-size: 24px;"></i> Home</a>
         <a href="../user.php"><i class="fas fa-user-plus" style="font-size: 24px;"></i> Register Account</a>
     </div>
 
-    <!-- Search Bar -->
     <div class="search-bar">
         <form method="GET" action="">
             <input type="text" name="search" placeholder="Search by username or email" value="<?= htmlspecialchars($searchQuery) ?>">
@@ -175,15 +156,26 @@ $accounts = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <?php foreach ($accounts as $account): ?>
                 <div class="account">
                     <div>
-                        <strong><?= htmlspecialchars($account['username']) ?></strong> (<?= htmlspecialchars($account['email']) ?>) - <?= htmlspecialchars($account['level']) ?>
+                        <strong><?= htmlspecialchars($account['username']) ?></strong>
+                    </div>
+                    <div>
+                        <?= htmlspecialchars($account['email']) ?>
+                    </div>
+                    <div>
+                        <?= htmlspecialchars($account['level']) ?>
+                    </div>
+                    <div>
+                        <em>Password: <span style="color: #ffc107;">(hashed)</span></em>
                     </div>
                     <div>
                         <a href="hr4edit.php?id=<?= $account['id'] ?>">Edit</a>
+                        <a href="hr4changepassword.php?id=<?= $account['id'] ?>">Change Password</a>
                         <a href="?delete=<?= $account['id'] ?>" class="delete" onclick="return confirm('Are you sure you want to delete this account?');">Delete</a>
                     </div>
                 </div>
             <?php endforeach; ?>
         <?php endif; ?>
+
     </div>
 
 </body>

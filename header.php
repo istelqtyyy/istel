@@ -1,15 +1,5 @@
 <?php
-// Connect to the database
-$host = 'localhost';
-$dbname = 'user'; // Your database name
-$user = 'root'; // Replace with your actual database username
-$pass = ''; // Leave empty if no password
-$conn = new mysqli($host, $user, $pass, $dbname);
-
-// Check the connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+include 'dbconnect.php';
 
 // Fetch unread notification count
 $stmt = $conn->prepare("SELECT COUNT(*) as unread_count FROM form WHERE is_read = 0");
@@ -107,8 +97,8 @@ $stmt->close();
                     <img src="img/gwa.jpg" alt="Your Image" class="navbar-image"> <!-- Image on the left -->
                     <span class="navbar-title">GREAT WALL ARTS</span>
                 </li>
-                <li><a href="dashboard.php">Home</a></li>
-                <li><a href="login.php">Logout</a></li>
+                <li><a href="include/home.php">Home</a></li>
+                <li><a href="user/logout.php">Logout</a></li>
                 <!-- Bell Icon in header.php -->
                 <a href="notification.php" class="notification-icon" onclick="markNotificationsAsRead()">
                     <i class="fas fa-bell"></i> <!-- Bell icon -->
@@ -120,7 +110,7 @@ $stmt->close();
                 <script>
                     function markNotificationsAsRead() {
                         // Simple way to trigger the notification read action
-                        window.location.href = 'notification.php';
+                        window.location.href = '../notification.php';
                     }
                 </script>
 
@@ -135,12 +125,12 @@ $stmt->close();
     <div class="sidebar closed" id="sidebar">
         <div class="sidebar-content">
             <ul class="sidebar-list">
-                <li class="sidebar-item"><a href="dashboard.php">HOME</a></li>
+                <li class="sidebar-item"><a href="dashboard.php">ADMIN</a></li>
                 <li class="sidebar-item"><a href="core.php">CORE</a></li>
                 <li class="sidebar-item"><a href="hr.php">HR</a></li>
                 <li class="sidebar-item"><a href="finance.php">FINANCE</a></li>
                 <li class="sidebar-item"><a href="logistics.php">LOGISTICS</a></li>
-                <li class="sidebar-item"><a href="user.php">CREATE USER ACCOUNT</a></li>
+                <li class="sidebar-item"><a href="user/user.php">CREATE USER ACCOUNT</a></li>
 
             </ul>
         </div>

@@ -1,14 +1,5 @@
 <?php
-// Connect to the database
-$host = 'localhost';
-$dbname = 'user';
-$user = 'root';
-$pass = '';
-$conn = new mysqli($host, $user, $pass, $dbname);
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+include '../dbconnect.php';
 
 // Fetch all unread notifications
 $stmt = $conn->prepare("SELECT * FROM form ORDER BY created_at DESC");

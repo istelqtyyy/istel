@@ -1,31 +1,26 @@
 <?php
-// Database connection
-$host = 'localhost'; // Your database host
-$dbname = 'user'; // Your database name
-$username = 'root'; // Your database username
-$password = ''; // Your database password
-
-try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
-    // Set error mode
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    die("Connection failed: " . $e->getMessage());
-}
+include '../dbconnect.php';
 
 // Handle Delete
 if (isset($_GET['delete'])) {
     $deleteId = $_GET['delete'];
+
+    // Ensure the deleteId is valid
     if (!empty($deleteId) && is_numeric($deleteId)) {
-        $deleteQuery = "DELETE FROM usercontrol WHERE id = :id";
-        $stmt = $pdo->prepare($deleteQuery);
-        $stmt->bindParam(':id', $deleteId, PDO::PARAM_INT);
+        // Prepare and execute the delete query using MySQLi
+        $deleteQuery = "DELETE FROM usercontrol WHERE id = ?";
+        $stmt = $conn->prepare($deleteQuery);
+        $stmt->bind_param('i', $deleteId); // 'i' indicates an integer
+
         if ($stmt->execute()) {
-            header("Location: Core3.php"); // Redirect after deletion
+            header("Location: logistics3.php"); // Redirect after deletion
             exit();
         } else {
             die('Failed to delete the account.');
         }
+
+        // Close the prepared statement
+        $stmt->close();
     } else {
         die('ID not provided or invalid.');
     }
@@ -37,13 +32,31 @@ if (isset($_GET['search'])) {
     $searchQuery = $_GET['search'];
 }
 
-// Fetch accounts leveled as 'Core' with optional search
-$query = "SELECT * FROM usercontrol WHERE level = 'Core' AND (username LIKE :search OR email LIKE :search)";
-$stmt = $pdo->prepare($query);
-$searchTerm = "%" . $searchQuery . "%";
-$stmt->bindParam(':search', $searchTerm, PDO::PARAM_STR);
+// Include the database connection
+include '../dbconnect.php';  // Assuming this connects to your database using MySQLi
+
+// Prepare the MySQLi query
+$query = "SELECT * FROM usercontrol WHERE level = 'Core' AND (username LIKE ? OR email LIKE ?)";
+$stmt = $conn->prepare($query);
+
+// Add wildcards to the search term for LIKE operation
+$searchTerm = '%' . $searchQuery . '%'; // Using % for searching
+$stmt->bind_param('ss', $searchTerm, $searchTerm); // Bind the parameters (string type 's' for both)
+
+// Execute the query
 $stmt->execute();
-$accounts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Get the result
+$result = $stmt->get_result();
+
+// Fetch all accounts as an associative array
+$accounts = $result->fetch_all(MYSQLI_ASSOC);
+
+// Close the statement and connection (good practice)
+$stmt->close();
+$conn->close();
+
+// Use the $accounts array to process results
 ?>
 
 <!DOCTYPE html>
@@ -156,8 +169,8 @@ $accounts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <!-- Navigation Buttons -->
     <div class="nav-buttons">
-        <a href="../dashboard.php"><i class="fas fa-home" style="font-size: 24px;"></i> Home</a>
-        <a href="../user.php"><i class="fas fa-user-plus" style="font-size: 24px;"></i> Register Account</a>
+        <a href="../core.php"><i class="fas fa-home" style="font-size: 24px;"></i> Home</a>
+        <a href="../user/user.php"><i class="fas fa-user-plus" style="font-size: 24px;"></i> Register Account</a>
     </div>
 
     <!-- Search Bar -->
@@ -179,6 +192,7 @@ $accounts = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     </div>
                     <div>
                         <a href="core3edit.php?id=<?= $account['id'] ?>">Edit</a>
+                        <a href="core3changepassword.php?id=<?= $account['id'] ?>" class="change-password">Change Password</a>
                         <a href="?delete=<?= $account['id'] ?>" class="delete" onclick="return confirm('Are you sure you want to delete this account?');">Delete</a>
                     </div>
                 </div>

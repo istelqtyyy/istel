@@ -1,21 +1,26 @@
 <?php
-// Database configuration
-$servername = "localhost"; // Change if your server is different
-$username = "root"; // Your database username
-$password = ""; // Leave this empty if there is no password
-$dbname = "user"; // Your database name
+// Start session
+session_start();
+include '../dbconnect.php';
 
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+// Check if user is logged in and has a level
+if (!isset($_SESSION['level'])) {
+    die("You must be logged in to view this page.");
 }
 
-// SQL query to fetch HR employees
-$sql = "SELECT id, username, email, last_login FROM usercontrol WHERE level = 'CORE'";
-$result = $conn->query($sql);
+// Get user level from session
+$user_level = $_SESSION['level'];
+
+// Check if the logged-in user's level is ADMIN or CORE
+if ($user_level !== 'ADMIN' && $user_level !== 'CORE') {
+    die("You do not have permission to view this page.");
+}
+
+// SQL query to fetch login attempts for users with the level CORE only
+$sql = "SELECT username, level, login, success FROM login WHERE level = 'CORE'";
+$stmt = $conn->prepare($sql);
+$stmt->execute();
+$result = $stmt->get_result();
 
 // Start HTML output
 echo "<!DOCTYPE html>";
@@ -23,7 +28,7 @@ echo "<html lang='en'>";
 echo "<head>";
 echo "<meta charset='UTF-8'>";
 echo "<meta name='viewport' content='width=device-width, initial-scale=1.0'>";
-echo "<title>Employee List</title>";
+echo "<title>Core Login Attempts</title>";
 echo "<style>
     body {
         font-family: Arial, sans-serif;
@@ -72,29 +77,29 @@ echo "<style>
 echo "</head>";
 echo "<body>";
 
-// Home button to link to core.php
-echo "<a href='../core.php' class='home-button'>🏠 Home</a>";
+// Home button to link to dashboard.php
+echo "<a href='../dashboard.php' class='home-button'>🏠 Home</a>";
 
 // Check if there are results
 if ($result->num_rows > 0) {
     // Start table
     echo "<table>";
-    echo "<tr><th>ID</th><th>Username</th><th>Email</th><th>Last Login</th></tr>";
+    echo "<tr><th>Username</th><th>Level</th><th>Login</th><th>Success</th></tr>";
 
     // Output data of each row
     while ($row = $result->fetch_assoc()) {
         echo "<tr>";
-        echo "<td>" . $row["id"] . "</td>";
-        echo "<td>" . $row["username"] . "</td>";
-        echo "<td>" . $row["email"] . "</td>";
-        echo "<td>" . $row["last_login"] . "</td>";
+        echo "<td>" . htmlspecialchars($row["username"]) . "</td>";
+        echo "<td>" . htmlspecialchars($row["level"]) . "</td>";
+        echo "<td>" . htmlspecialchars($row["login"]) . "</td>";
+        echo "<td>" . ($row["success"] ? 'Yes' : 'No') . "</td>";
         echo "</tr>";
     }
 
     // End table
     echo "</table>";
 } else {
-    echo "<p>0 results found</p>";
+    echo "<p>No login attempts found for CORE users.</p>";
 }
 
 // Close the connection

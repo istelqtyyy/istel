@@ -2,19 +2,7 @@
 // Start session
 session_start();
 
-// Database configuration
-$servername = "localhost"; // Change if your server is different
-$username = "root"; // Your database username
-$password = ""; // Leave this empty if there is no password
-$dbname = "user"; // Your database name
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+include '../dbconnect.php';
 
 // Check if user is logged in and has a level
 if (!isset($_SESSION['level'])) {
@@ -24,10 +12,14 @@ if (!isset($_SESSION['level'])) {
 // Get user level from session
 $user_level = $_SESSION['level'];
 
-// SQL query to fetch employees based on user level
-$sql = "SELECT id, username, email, last_login FROM usercontrol WHERE level = ?";
+// Check if the logged-in user's level is ADMIN
+if ($user_level !== 'ADMIN') {
+    die("You do not have permission to view this page.");
+}
+
+// SQL query to fetch login attempts for users with the level ADMIN
+$sql = "SELECT username, level, login, success FROM login WHERE level = 'ADMIN'"; // Changed 'attempted_at' to 'login'
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("s", $user_level);
 $stmt->execute();
 $result = $stmt->get_result();
 
@@ -37,7 +29,7 @@ echo "<html lang='en'>";
 echo "<head>";
 echo "<meta charset='UTF-8'>";
 echo "<meta name='viewport' content='width=device-width, initial-scale=1.0'>";
-echo "<title>Employee List</title>";
+echo "<title>Admin Login Attempts</title>";
 echo "<style>
     body {
         font-family: Arial, sans-serif;
@@ -93,22 +85,22 @@ echo "<a href='dashboard.php' class='home-button'>🏠 Home</a>";
 if ($result->num_rows > 0) {
     // Start table
     echo "<table>";
-    echo "<tr><th>ID</th><th>Username</th><th>Email</th><th>Last Login</th></tr>";
+    echo "<tr><th>Username</th><th>Level</th><th>Login</th><th>Success</th></tr>"; // Changed 'Attempted At' to 'Login'
 
     // Output data of each row
     while ($row = $result->fetch_assoc()) {
         echo "<tr>";
-        echo "<td>" . $row["id"] . "</td>";
-        echo "<td>" . $row["username"] . "</td>";
-        echo "<td>" . $row["email"] . "</td>";
-        echo "<td>" . $row["last_login"] . "</td>";
+        echo "<td>" . htmlspecialchars($row["username"]) . "</td>";
+        echo "<td>" . htmlspecialchars($row["level"]) . "</td>";
+        echo "<td>" . htmlspecialchars($row["login"]) . "</td>"; // Changed 'attempted_at' to 'login'
+        echo "<td>" . ($row["success"] ? 'Yes' : 'No') . "</td>";
         echo "</tr>";
     }
 
     // End table
     echo "</table>";
 } else {
-    echo "<p>0 results found</p>";
+    echo "<p>No login attempts found for ADMIN users.</p>"; // Changed message
 }
 
 // Close the connection
